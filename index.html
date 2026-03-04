@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shijuka's Motivation Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Puts the graphics behind the text */
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 80%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        button {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background: #7dd3fc; }
+    </style>
+</head>
+<body>
+
+    <canvas id="algoCanvas"></canvas>
+
+    <div class="container">
+        <h1 id="quote">"Small steps every day lead to big results."</h1>
+        <button onclick="newQuote()">Next Motivation</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('algoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Setup canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const quotes = [
+            "Success is not final, failure is not fatal.",
+            "Hard work beats talent when talent doesn't work hard.",
+            "Your only limit is your mind.",
+            "Discipline is doing what needs to be done, even if you don't want to.",
+            "May 2026 is coming. Be ready for your career!"
+        ];
+
+        function drawGraphics() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 0.5;
+
+            // Using a simple loop to draw lines (Like your DDA/Bresenham logic)
+            for (let i = 0; i < 50; i++) {
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+        }
+
+        function newQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('quote').innerText = `"${quotes[randomIndex]}"`;
+            drawGraphics(); // Redraw the "Algorithm" art every time you click
+        }
+
+        // Initial draw
+        drawGraphics();
+    </script>
+</body>
+</html>
