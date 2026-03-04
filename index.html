@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shijuka's Motivation Canvas</title>
+    <title>Fahad's Motivation Canvas</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: #0f172a;
             color: white;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
@@ -21,29 +20,55 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: -1; /* Puts the graphics behind the text */
+            z-index: -1;
         }
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 24px;
             text-align: center;
-            max-width: 80%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        #oratorImage {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #38bdf8;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+        h1 {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+        #author {
+            color: #38bdf8;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
         }
         button {
             background: #38bdf8;
             color: #0f172a;
             border: none;
-            padding: 12px 24px;
+            padding: 14px 28px;
             font-size: 1rem;
-            font-weight: bold;
-            border-radius: 8px;
+            font-weight: 800;
+            border-radius: 12px;
             cursor: pointer;
-            margin-top: 20px;
+            transition: transform 0.2s, background 0.2s;
         }
-        button:hover { background: #7dd3fc; }
+        button:hover {
+            background: #7dd3fc;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -51,7 +76,9 @@
     <canvas id="algoCanvas"></canvas>
 
     <div class="container">
-        <h1 id="quote">"Small steps every day lead to big results."</h1>
+        <img id="oratorImage" src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped%29.jpg" alt="Orator">
+        <h1 id="quote">"The only way to do great work is to love what you do."</h1>
+        <p id="author">— Steve Jobs</p>
         <button onclick="newQuote()">Next Motivation</button>
     </div>
 
@@ -59,25 +86,37 @@
         const canvas = document.getElementById('algoCanvas');
         const ctx = canvas.getContext('2d');
         
-        // Setup canvas size
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         const quotes = [
-            "Success is not final, failure is not fatal.",
-            "Hard work beats talent when talent doesn't work hard.",
-            "Your only limit is your mind.",
-            "Discipline is doing what needs to be done, even if you don't want to.",
-            "May 2026 is coming. Be ready for your career!"
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", img: "https://upload.wikimedia.org/wikipedia/commons/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped%29.jpg" },
+            { text: "The future depends on what you do today.", author: "Mahatma Gandhi", img: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Mahatma-Gandhi%2C_studio%2C_1931.jpg" },
+            { text: "Whether you think you can or you think you can’t, you’re right.", author: "Henry Ford", img: "https://upload.wikimedia.org/wikipedia/commons/1/18/Henry_ford_1919.jpg" },
+            { text: "It always seems impossible until it's done.", author: "Nelson Mandela", img: "https://upload.wikimedia.org/wikipedia/commons/0/02/Nelson_Mandela_1994.jpg" },
+            { text: "Quality is not an act, it is a habit.", author: "Aristotle", img: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Aristotle_Altemps_Inv8575.jpg" },
+            { text: "Action is the foundational key to all success.", author: "Pablo Picasso", img: "https://upload.wikimedia.org/wikipedia/commons/9/98/Pablo_picasso_1.jpg" },
+            { text: "The secret of getting ahead is getting started.", author: "Mark Twain", img: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Mark_Twain_by_AF_Bradley.jpg" },
+            { text: "Work hard in silence, let your success be your noise.", author: "Frank Ocean", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Frank_Ocean_2012.jpg" },
+            { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn", img: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Jim_Rohn_1985.jpg" },
+            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius", img: "https://upload.wikimedia.org/wikipedia/commons/5/50/Confucius_Tang_Dynasty.jpg" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt", img: "https://upload.wikimedia.org/wikipedia/commons/2/22/Eleanor_Roosevelt_portrait_1933.jpg" },
+            { text: "Hardships often prepare ordinary people for an extraordinary destiny.", author: "C.S. Lewis", img: "https://upload.wikimedia.org/wikipedia/commons/d/d3/C.s.lewis3.jpg" },
+            { text: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh", img: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project_%28454045%29.jpg" },
+            { text: "Success is walking from failure to failure with no loss of enthusiasm.", author: "Winston Churchill", img: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Sir_Winston_Churchill_1941_Statesman.jpg" },
+            { text: "Your only limit is your mind.", author: "Motivation", img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=200" },
+            { text: "Don’t watch the clock; do what it does. Keep going.", author: "Sam Levenson", img: "https://upload.wikimedia.org/wikipedia/en/3/3e/Sam_Levenson.jpg" },
+            { text: "Opportunities don't happen. You create them.", author: "Chris Grosser", img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=200" },
+            { text: "Discipline is doing what needs to be done.", author: "Discipline", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200" },
+            { text: "May 2026 is your time to shine, Fahad!", author: "Fahad's Goal", img: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=200" },
+            { text: "Your hard work will take you to the Middle East.", author: "Future Fahad", img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=200" }
         ];
 
         function drawGraphics() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = '#38bdf8';
             ctx.lineWidth = 0.5;
-
-            // Using a simple loop to draw lines (Like your DDA/Bresenham logic)
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 40; i++) {
                 ctx.beginPath();
                 ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
                 ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
@@ -86,12 +125,13 @@
         }
 
         function newQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById('quote').innerText = `"${quotes[randomIndex]}"`;
-            drawGraphics(); // Redraw the "Algorithm" art every time you click
+            const selected = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').innerText = `"${selected.text}"`;
+            document.getElementById('author').innerText = `— ${selected.author}`;
+            document.getElementById('oratorImage').src = selected.img;
+            drawGraphics();
         }
 
-        // Initial draw
         drawGraphics();
     </script>
 </body>
